@@ -1,0 +1,16 @@
+
+ 61     int i, j;
+ 62     char f;
+ 63     for(i = 1; i <= text_length; i++)
+ 64     {
+ 65         char text = 0;
+ 66         int k = 7;
+ 67         for(j = 1; j <= 8; j++)
+ 68         {
+ 69             fread(&f, 1, 1, fd);
+ 70             if (f & 0x01)
+ 71                 text = text |  0x01 << k;
+ 72             k--;
+ 73         }
+ 74         fwrite(&text, 1, 1, ft);
+ 75   
