@@ -11,7 +11,7 @@ int edit(char *origin_fil, char *action, char *change)
 	{
 		case 't':
 		{
-			strcpy(act,"TIT2");
+			strcpy(act,"TPE1");
 			//printf("ll%s\n", act);
 			//act = "TIT2";
 			break;
@@ -37,7 +37,10 @@ int edit(char *origin_fil, char *action, char *change)
 	int size, ch;
 	unsigned char pad1[7] = { 0x03, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00}; 
 	unsigned char pad2[3] = { 0x00, 0x00, 0x00 }; 
-
+	//char artist[31], song[31], album[31], year[4], comment[31], genre[4]; 
+	char changesize30[31];
+	char changesize4[4];
+	int flag = 0;
 	//printf("sksksks\n");
 	printf("hh%s\n", act);
 
@@ -93,6 +96,15 @@ int edit(char *origin_fil, char *action, char *change)
 
 			// Adding tag number entered by the user. 
 			fprintf(f1, "%s", temp); 
+			if((strcmp(buffer, "TYER") == 0))
+			{
+				flag = 1;
+				strcpy(changesize4, temp);
+			}
+			else
+			{
+				strcpy(changesize30, temp);
+			}
 			//printf("\nINSaft%ld",ftell(f1));
 			//fseek(f2, size + 10, SEEK_CUR);
 			fseek(f2, lam + 10, SEEK_CUR);
@@ -130,8 +142,26 @@ int edit(char *origin_fil, char *action, char *change)
 		fputc(ch, f1); 
 	}
 
-	fclose(f1);
-	fclose(f2);
-	fclose(f3);
+	//////////////////////////////////////////tail
+
+	switch(action[1])
+	{
+		case 't':
+		{
+			fseek(f1, -95, SEEK_END);
+			fwrite(changesize30,30,1,f1);
+			break;
+		}
+		default:
+		{
+			printf("enter valid\n");
+		}
+	}
+	printf("last\n");
+	fcloseall();
+
+	//fclose(f1);
+	//fclose(f2);
+	//fclose(f3);
 return SUCCESS;
 }

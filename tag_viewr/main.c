@@ -22,6 +22,7 @@ int main(int argc, char *argv[])
 			}
 
 			status = edit(argv[2], argv[3], argv[4]);
+			printf("dwfwe\n");
 			if(status == FAILURE)
 			{
 				printf("failed\n");
