@@ -7,13 +7,50 @@ int edit(char *origin_fil, char *action, char *change)
 	{
 		return FAILURE;
 	}
+	char * name = malloc(sizeof(char) * 10);
 	switch(action[1])
 	{
 		case 't':
 		{
-			strcpy(act,"TPE1");
+			strcpy(act,"TIT2");
+			strcpy(name,"title");
 			//printf("ll%s\n", act);
 			//act = "TIT2";
+			break;
+		}
+		case 'T':
+		{
+			strcpy(act, "TRCK");
+			strcpy(name,"track");
+			break;
+		}
+		case 'a':
+		{
+			strcpy(act, "TPE1");
+			strcpy(name,"artist");
+			break;
+		}
+		case 'A':
+		{
+			strcpy(act, "TALB");
+			strcpy(name,"Album");
+			break;
+		}
+		case 'c':
+		{
+			strcpy(act, "TCON");
+			strcpy(name,"comment");
+			break;
+		}
+		case 'y':
+		{
+			strcpy(act, "TYER");
+			strcpy(name,"year");
+			break;
+		}
+		//case 'g':
+		{
+			//strcpy(act, "");
 			break;
 		}
 		default:
@@ -77,7 +114,7 @@ int edit(char *origin_fil, char *action, char *change)
 			printf("bufINS:%s\n",buffer );
 			printf("match\n");
 			//fseek(f2,-4,SEEK_CUR);//go 4 bytes back from cur pos
-			printf("\nEnter the track number of the mp3.\n"); 
+			printf("\nEnter the %s of the mp3.\n", name); 
 			scanf("%[^\n]s", temp);
 
 			fprintf(f1, "%s", act); 
@@ -137,6 +174,7 @@ int edit(char *origin_fil, char *action, char *change)
 		}
 		count --;
 	}
+	printf("jisakfa\n");
 	while ((ch = fgetc(f2)) != EOF) // Appending tagging info. 
 	{
 		fputc(ch, f1); 
@@ -146,9 +184,34 @@ int edit(char *origin_fil, char *action, char *change)
 
 	switch(action[1])
 	{
-		case 't':
+		case 't'://TIT2
+		{
+			fseek(f1, -125, SEEK_END);
+			fwrite(changesize30,30,1,f1);
+			break;
+		}
+		case 'a'://TPE1
 		{
 			fseek(f1, -95, SEEK_END);
+			fwrite(changesize30,30,1,f1);
+			break;
+		}
+		case 'A'://TALB
+		{
+			fseek(f1, -65, SEEK_END);
+			fwrite(changesize30,30,1,f1);
+			break;
+		}
+		case 'y'://TYER
+		{
+			fseek(f1, -35, SEEK_END);
+			fwrite(changesize4,4,1,f1);
+			break;
+		}
+		case 'c'://COMM
+		{
+
+			fseek(f1, -31, SEEK_END);
 			fwrite(changesize30,30,1,f1);
 			break;
 		}
